@@ -9,26 +9,35 @@ import java.lang.reflect.Method;
  * @author lixuy
  * Created on 2019-04-10
  */
-public class ScoreMethodInterceptor implements MethodInterceptor {
-
-    @Override
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+public class ScoreMethodInterceptor implements HandlerInterceptor {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
+        getIdFromHeader();
         System.out.println("before method invoke....");
-        Object object = methodInvocation.proceed();
         try {
-            String controllerName = methodInvocation.getThis().getClass().getSimpleName();
-            String serviceName = "com.course.service." + controllerName;
-
-            Class service = Class.forName(serviceName);
-            Object serviceObject = service.newInstance();
-            Method method = service.getMethod(methodInvocation.getMethod().getName());
-            if (method != null) {
-                method.invoke(serviceObject);
-            }
-        } catch (ClassNotFoundException  e) {
+            System.out.println("url:"+request.getRequestURI());
+            System.out.println("method:"+request.getMethod());
+            System.out.println("params:"+request.getParameterMap());
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
         System.out.println("after method invoke.....");
-        return object;
+        return true;
+    }
+    private void getIdFromHeader() {
+        // 获取当前的HttpServletRequest
+        System.out.println("get id from header");
+        if (RequestContextHolder.getRequestAttributes() == null) {
+            UserHolder.setHeader("1");
+            return;
+        }
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        // 获取请求头参数 todo 模拟从请求头获取id
+        String id = request.getHeader("id");
+        if (id == null || id.isEmpty()) {
+            // 默认id为1
+            id = "1";
+        }
+        UserHolder.setHeader(id);
     }
 }
