@@ -1,18 +1,37 @@
-package com.course.service;
+package com.course.coursedesign.service;
 
-import com.course.pojo.PointObject;
-import com.course.utils.FileUtils;
-import com.course.utils.JsonUtils;
+import com.course.coursedesign.dao.PointDATA;
+import com.course.coursedesign.pojo.PointObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * @author lixuy
- * Created on 2019-04-11
- */
-//类名与方法名须与controller层拦截的方法一致
+@Service
 public class BloodSugar {
+    @Autowired
+    private PointDATA pointDATA;
 
-    public void bloodSugar(){
+    public void bloodSugar() {
+
         System.out.println("+++++bloodSugar积分计算方法执行+++++");
+        PointObject point = pointDATA.getPoint();
+        if (point == null) {
+            System.out.println("数据错误");
+            return;
+        }
+        Integer count= point.getBloodSugarCount();
+        if (count == null) {
+            System.out.println("数据错误");
+            return;
+        }
+        count++;
+        PointObject dataPoint = pointDATA.getPoint();
+        dataPoint.setBloodSugarCount(count);
+        pointDATA.setPoint(dataPoint);
+        if(count<=3){
+            System.out.println("血糖次数小于等于3次，不加分");
+            return;
+        }
+        // 增加成长积分
+        pointDATA.addScore(1, 0);
     }
-
 }
