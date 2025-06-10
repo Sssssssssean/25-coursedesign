@@ -1,18 +1,24 @@
-package com.course.service;
+package com.course.coursedesign.service;
 
-import com.course.pojo.PointObject;
-import com.course.utils.FileUtils;
-import com.course.utils.JsonUtils;
+import com.course.coursedesign.dao.PointDATA;
+import com.course.coursedesign.pojo.PointObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- * @author lixuy
- * Created on 2019-04-11
- */
-//类名与方法名须与controller层拦截的方法一致
+@Service
 public class FollowUp {
+    @Autowired
+    private PointDATA pointDATA;
+    public void followUp() {
 
-    public void followUp(){
         System.out.println("+++++followUp积分计算方法执行+++++");
+        //获取积分对象
+        PointObject point=pointDATA.getPoint();
+        if(point==null){
+            System.out.println("数据错误");
+            return;
+        }
+        //计算积分
+        pointDATA.addScore(0,3);
     }
-
 }

@@ -1,17 +1,20 @@
-package com.course.controller;
+package com.course.coursedesign.controller;
 
-import org.springframework.stereotype.Component;
+import com.course.coursedesign.model.Result;
+import com.course.coursedesign.service.FollowUp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author lixuy
- * Created on 2019-04-11
- */
-@Component
-//完成门诊随访
-public class FollowUp {
+@RestController
+public class FollowUpController {
+    @Autowired
+    private FollowUp followUp;
 
-    public void followUp(){
-        System.out.println("======被拦截的followUp方法执行======");
+    @GetMapping("/followUp")
+    public Result followup(){
+        System.out.println("followup 执行");
+        followUp.followUp();
+        return Result.success("FollowUp completed");
     }
-
 }
