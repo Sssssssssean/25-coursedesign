@@ -1,7 +1,7 @@
-package com.course.coursedesign.controller;
+package com.course.controller;
 
-import com.course.coursedesign.model.Result;
-import com.course.coursedesign.service.FollowUp;
+import com.course.model.Result;
+import com.course.service.FollowUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
