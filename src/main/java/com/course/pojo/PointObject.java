@@ -1,6 +1,7 @@
 package com.course.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author lixuy
@@ -59,4 +60,63 @@ public class PointObject {
     public void setScoreTotal(Integer scoreTotal) {
         this.scoreTotal = scoreTotal;
     }
+
+    public String getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(String lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getLastComplicationTime() {
+        return lastComplicationTime;
+    }
+
+    public void setLastComplicationTime(String lastComplicationTime) {
+        this.lastComplicationTime = lastComplicationTime;
+    }
+
+    public String getLastYdqnTime() {
+        return lastYdqnTime;
+    }
+
+    public void setLastYdqnTime(String lastYdqnTime) {
+        this.lastYdqnTime = lastYdqnTime;
+    }
+
+    public Boolean getProfileInputed() {
+        return profileInputed;
+    }
+
+    public void setProfileInputed(Boolean profileInputed) {
+        this.profileInputed = profileInputed;
+    }
+
+    public Integer getBloodSugarCount() {
+        return bloodSugarCount;
+    }
+
+    public void setBloodSugarCount(Integer bloodSugarCount) {
+        this.bloodSugarCount = bloodSugarCount;
+    }
+
+    public List<ScoreRecord> getScoreRecords() {
+        return scoreRecords;
+    }
+
+    public void setScoreRecords(List<ScoreRecord> scoreRecords) {
+        this.scoreRecords = scoreRecords;
+    }
+
+    @Override
+    public String toString() {
+        return "PointObject{" +
+                "id=" + id +
+                ", growScore=" + growScore +
+                ", exchangeScore=" + exchangeScore +
+                ", scoreTotal=" + scoreTotal +
+                '}';
+    }
+
 }
