@@ -1,7 +1,7 @@
-package com.course.coursedesign.service;
+package com.course.service;
 
-import com.course.coursedesign.dao.PointDATA;
-import com.course.coursedesign.pojo.PointObject;
+import com.course.dao.PointDATA;
+import com.course.pojo.PointObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
