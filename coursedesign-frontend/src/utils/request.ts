@@ -3,8 +3,8 @@ import { ElMessage } from 'element-plus'
 
 // 创建 axios 实例
 const request = axios.create({
-    baseURL: '/api',
-    timeout: 5000,
+    baseURL: 'http://localhost:8080',
+    timeout: 10000, // 增加超时时间到10秒
     headers: {
         'Content-Type': 'application/json'
     }
@@ -17,13 +17,18 @@ request.interceptors.request.use(
             url: config.url,
             method: config.method,
             data: config.data,
-            headers: config.headers
+            headers: config.headers,
+            baseURL: config.baseURL
         })
-        // 可以在这里添加token等认证信息
+        // 从localStorage获取用户ID
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+            config.headers['X-userId'] = userId
+        }
         return config
     },
     error => {
-        console.error('请求错误:', error)
+        console.error('请求配置错误:', error)
         return Promise.reject(error)
     }
 )
@@ -34,17 +39,10 @@ request.interceptors.response.use(
         console.log('收到响应:', {
             url: response.config.url,
             status: response.status,
-            data: response.data
+            data: response.data,
+            headers: response.headers
         })
-        const res = response.data
-        // 这里可以根据后端的响应结构进行调整
-        if (res.code === 200) {
-            return res
-        } else {
-            console.error('响应错误:', res)
-            ElMessage.error(res.message || '请求失败')
-            return Promise.reject(new Error(res.message || '请求失败'))
-        }
+        return response
     },
     error => {
         console.error('响应错误:', {
@@ -52,15 +50,21 @@ request.interceptors.response.use(
             status: error.response?.status,
             data: error.response?.data,
             message: error.message,
-            config: error.config
+            config: error.config,
+            code: error.code
         })
-        if (error.response) {
+        
+        if (error.code === 'ECONNABORTED') {
+            ElMessage.error('请求超时，请检查网络连接')
+        } else if (error.code === 'ERR_NETWORK') {
+            ElMessage.error('网络连接失败，请检查后端服务是否正常运行')
+        } else if (error.response) {
             // 服务器返回了错误状态码
             const message = error.response.data?.message || `请求失败 (${error.response.status})`
             ElMessage.error(message)
         } else if (error.request) {
             // 请求已发送但没有收到响应
-            ElMessage.error('服务器无响应，请检查网络连接')
+            ElMessage.error('服务器无响应，请检查后端服务是否正常运行')
         } else {
             // 请求配置出错
             ElMessage.error('请求配置错误：' + error.message)

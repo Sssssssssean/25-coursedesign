@@ -75,7 +75,7 @@ const handleSubmit = async () => {
     if (response.data) {
       // 发送积分更新请求，让后端判断是否加分
       const pointsResponse = await request({
-        url: '/points/update',
+        url: '/api/points/update',
         method: 'post',
         data: {
           type: 'bloodSugar',

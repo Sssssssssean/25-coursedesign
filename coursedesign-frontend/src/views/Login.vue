@@ -87,18 +87,48 @@ const handleLogin = async () => {
     await loginFormRef.value.validate()
     loading.value = true
     
+    console.log('开始登录，用户ID:', loginForm.userId)
+    
     // 直接进行登录
     const res = await login(loginForm.userId)
-    if (res.code === 200) {
+    console.log('登录响应:', res)
+    
+    if (res.data.code === 200) {
       // 存储用户信息
       localStorage.setItem('userId', loginForm.userId)
       ElMessage.success('登录成功')
+      
       // 跳转到行为页面
-      router.push('/behavior')
+      console.log('准备跳转到行为页面')
+      try {
+        await router.push('/behavior')
+        console.log('跳转成功')
+      } catch (error) {
+        console.error('路由跳转失败:', error)
+        ElMessage.error('页面跳转失败，请重试')
+      }
+    } else {
+      console.error('登录失败，响应码:', res.data.code, '错误信息:', res.data.message)
+      ElMessage.error(res.data.message || '登录失败')
     }
-  } catch (error) {
-    console.error('登录失败:', error)
-    ElMessage.error('登录失败，请重试')
+  } catch (error: any) {
+    console.error('登录失败，详细错误:', {
+      message: error.message,
+      response: error.response,
+      request: error.request,
+      config: error.config,
+      code: error.code
+    })
+    
+    if (error.code === 'ECONNABORTED') {
+      ElMessage.error('登录请求超时，请检查网络连接')
+    } else if (error.code === 'ERR_NETWORK') {
+      ElMessage.error('网络连接失败，请检查后端服务是否正常运行')
+    } else if (error.response) {
+      ElMessage.error(error.response.data?.message || '登录失败，请重试')
+    } else {
+      ElMessage.error('登录失败，请重试')
+    }
   } finally {
     loading.value = false
   }

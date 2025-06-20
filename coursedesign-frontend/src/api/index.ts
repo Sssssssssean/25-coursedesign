@@ -6,7 +6,7 @@ import type { ApiResponse } from '@/types/api'
 export function login(userId: string) {
   return request<ApiResponse>({
     url: '/account/login',
-    method: 'get',
+    method: 'post',
     params: { 'X-userId': userId }
   })
 }
@@ -32,6 +32,30 @@ export function generateReport() {
 export function followUp() {
   return request<ApiResponse>({
     url: '/followUp',
+    method: 'get'
+  })
+}
+
+// 胰岛功能监测
+export function ydgnNote() {
+  return request<ApiResponse>({
+    url: '/YdgnNote',
+    method: 'post'
+  })
+}
+
+// 扩展活动
+export function extendedActivity() {
+  return request<ApiResponse>({
+    url: '/extendedActivity',
+    method: 'get'
+  })
+}
+
+// 科研招募
+export function researchRecruitment() {
+  return request<ApiResponse>({
+    url: '/researchRecruitment',
     method: 'get'
   })
 }
