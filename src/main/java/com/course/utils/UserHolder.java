@@ -1,9 +1,5 @@
 package com.course.utils;
 
-/**
- * @FileName UserHolder
- * @Description
- */
 
 public class UserHolder {
     private static final ThreadLocal<String> threadLocalHeader = new ThreadLocal<>();
