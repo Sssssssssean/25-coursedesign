@@ -11,8 +11,12 @@ public class Result<DATA> implements Serializable {
         return new Result<T>(200, "", data);
     }
 
-    public static Result<Object> fail(int code, String msg) {
+    public static <T> Result<T> fail(int code, String msg) {
         return new Result<>(code, msg, null);
+    }
+
+    public static <T> Result<T> error(String msg) {
+        return new Result<>(500, msg, null);
     }
 
     public Result(int code, String message, DATA data) {

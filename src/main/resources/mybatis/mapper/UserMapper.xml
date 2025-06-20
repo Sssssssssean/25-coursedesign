@@ -2,23 +2,26 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.course.coursedesign2022.mapper.UserMapper">
+<mapper namespace="com.course.mapper.UserMapper">
     <select id="getPointObject" resultType="com.course.pojo.PointObject">
-        select * from `User`
+        select * from `pointobject`
     </select>
     <select id="getPointObjectByID" parameterType="int" resultType="com.course.pojo.PointObject">
-        select * from `User` where id = #{id}
+        select * from `pointobject` where id = #{id}
     </select>
     <!--对象中的属性可以直接取出-->
     <insert id="addPointObject" parameterType="com.course.pojo.PointObject">
-        insert into `User`(id, growScore, exchangeScore, scoreTotal) values (#{id},#{growScore},#{exchangeScore},#{scoreTotal})
+        insert into `pointobject`(id, growScore, exchangeScore, scoreTotal, lastComplicationTime, lastLoginTime, lastYdqnTime, profileInputed, bloodSugarCount)
+        values (#{id},#{growScore},#{exchangeScore},#{scoreTotal},#{lastComplicationTime},#{lastLoginTime},#{lastYdqnTime},#{profileInputed},#{bloodSugarCount})
     </insert>
     <update id="updatePointObject" parameterType="com.course.pojo.PointObject">
-        update `User`
-        set growScore=#{growScore}, exchangeScore=#{exchangeScore}, scoreTotal=#{scoreTotal}
+        update `pointobject`
+        set growScore=#{growScore}, exchangeScore=#{exchangeScore}, scoreTotal=#{scoreTotal},
+            lastComplicationTime=#{lastComplicationTime}, lastLoginTime=#{lastLoginTime},
+            lastYdqnTime=#{lastYdqnTime}, profileInputed=#{profileInputed}, bloodSugarCount=#{bloodSugarCount}
         where id=#{id}
     </update>
     <delete id="deletePointObject" parameterType="int">
-        delete from `User` where id=#{id}
+        delete from `pointobject` where id=#{id}
     </delete>
 </mapper>
